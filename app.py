@@ -7,9 +7,9 @@ from sklearn.preprocessing import StandardScaler
 # Load the trained model
 model = tf.keras.models.load_model('heart_disease_model.h5')
 
-# Load the scaler
-# You need to fit the scaler with your training data here
-# For example: scaler.fit(X_train)
+# Load and fit the scaler with your training data
+# For example: scaler = StandardScaler().fit(X_train)
+# You'll need to replace this with your actual scaler
 
 st.title('Heart Disease Prediction')
 
@@ -20,7 +20,7 @@ Please enter the following information:
 
 # Create input fields for each feature
 age = st.number_input('Age', min_value=0, max_value=120, value=50)
-sex = st.selectbox('Sex', ['Male', 'Female'])
+sex = st.selectbox('Sex', ['Female', 'Male'])
 cp = st.selectbox('Chest Pain Type', ['Typical Angina', 'Atypical Angina', 'Non-anginal Pain', 'Asymptomatic'])
 trestbps = st.number_input('Resting Blood Pressure (mm Hg)', min_value=0, max_value=300, value=120)
 chol = st.number_input('Serum Cholesterol (mg/dl)', min_value=0, max_value=600, value=200)
@@ -30,12 +30,12 @@ thalach = st.number_input('Maximum Heart Rate Achieved', min_value=0, max_value=
 exang = st.selectbox('Exercise Induced Angina', ['No', 'Yes'])
 oldpeak = st.number_input('ST Depression Induced by Exercise Relative to Rest', min_value=0.0, max_value=10.0, value=0.0, step=0.1)
 slope = st.selectbox('Slope of the Peak Exercise ST Segment', ['Upsloping', 'Flat', 'Downsloping'])
-ca = st.number_input('Number of Major Vessels Colored by Flourosopy', min_value=0, max_value=4, value=0)
+ca = st.number_input('Number of Major Vessels Colored by Flourosopy', min_value=0, max_value=3, value=0)
 thal = st.selectbox('Thalassemia', ['Normal', 'Fixed Defect', 'Reversible Defect'])
 
 # Create a dictionary to map categorical variables to numerical values
 categorical_map = {
-    'Sex': {'Male': 1, 'Female': 0},
+    'Sex': {'Female': 0, 'Male': 1},
     'Chest Pain Type': {'Typical Angina': 0, 'Atypical Angina': 1, 'Non-anginal Pain': 2, 'Asymptomatic': 3},
     'Fasting Blood Sugar > 120 mg/dl': {'No': 0, 'Yes': 1},
     'Resting ECG Results': {'Normal': 0, 'ST-T Wave Abnormality': 1, 'Left Ventricular Hypertrophy': 2},
@@ -59,8 +59,11 @@ if st.button('Predict'):
                               columns=['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'])
 
     # Scale the input data
+    # Uncomment and use this line when you have your scaler ready
+    # input_data_scaled = scaler.transform(input_data)
 
     # Make prediction
+    # Replace input_data with input_data_scaled when using the scaler
     prediction = model.predict(input_data)
     probability = prediction[0][0]
 
